@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document Similarity Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Arimo:ital@1&family=League+Gothic&family=Open+Sans:ital,wght@0,600;1,300&display=swap"
+    />
+    <style>
+      body {
+        font-family: "Open Sans", sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        text-align: center;
+      }
+
+      .form-section {
+        margin-bottom: 20px;
+      }
+      .container {
+            text-align: left;
+            margin-top: 50px;
+        }
+
+        
+        .document-text {
+            font-family: 'Arimo', sans-serif;
+            font-style: italic;
+            font-size: 50px;
+            color: #B0BECD;
+            display: block; 
+            margin-top: 0px;
+            margin-left: 30px;
+        }
+
+       
+        .vs-text {
+            font-family: 'League Gothic', sans-serif;
+            font-style: italic;
+            color: #59B280;
+            font-size: 40px;
+            display: block; 
+            margin-top: -10px; 
+            margin-left: 50px;
+        }
+
+        
+        .ai-generated-text {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 60px;
+            font-weight: bold;
+            color: #0f2f76;
+            display: block; /* Forces 'AI-GENERATED' to be on its own line */
+            margin-top: -50px; /* Reduces the space between 'VS' and 'AI-GENERATED' */
+            margin-left: 80px;
+        }
+
+        /* Styling for the description */
+        .description {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            color: black;
+            margin-top: 20px;
+            padding-left: 20px;
+        }
+      
+      h2 {
+        font-family: "League Gothic", sans-serif;
+        font-size: 32px;
+        font-weight: normal;
+        margin-top: 20px;
+      }
+
+      p {
+        font-size: 1px;
+        font-family: "Arial", sans-serif;
+      }
+
+      .upload-section {
+       
+        width: 45%;
+      }
+      .upload-section h1 {
+        font-family: "Open Sans", sans-serif;
+        font-weight: bold; 
+        font-size: 50px;
+        color: #59B280;
+        margin-bottom: 24px;
+      }
+
+      .upload-section label {
+        display: flex;
+        align-items: center; /* Align items vertically */
+        margin-left: 40px;
+        margin-bottom: 40px; /* Space between labels */
+        font-size: 24px;
+      }
+
+      .upload-section input[type="file"] {
+        border-radius: 20px; 
+        margin-left: 5px; 
+        padding: 5px; 
+      }
+      .upload-status {
+    margin-left: 10px; /* Space between the file input and status text */
+    color: #59B280; /* Customize color */
+    font-weight: bold; /* Make it bold */
+}
+
+      .label-input-container {
+        display: flex; 
+        justify-content: flex-start; /* Keep items close together */
+        align-items: center; /* Center align vertically */  
+      }
+
+      .upload-section button {
+        font-family: "Open Sans", sans-serif;
+        font-size: 17px;
+        font-weight: bold;
+        background-color: #B0BEC5; /* Specify your desired background color */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 20px;
+        margin-left: 200px;
+        margin-bottom: 40px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #4e8a6e;
+      }
+      .similarity-measure-container {
+        display: flex; /* Use flexbox for alignment */
+        justify-content: space-between; /* Space between left and right */
+        align-items: center; /* Center items vertically */
+        margin-top: 15px; /* Adjust space above the section */
+      }
+
+      .similarity-measure-container select {
+        margin-bottom: 40px;
+        color: white; 
+        margin-left: 200px;
+        border-radius: 20px; /* Round borders */
+        background-color: #59B280;; /* Background color */
+        padding: 5px; /* Padding inside the dropdown */
+        font-family: "Open Sans", sans-serif; /* Font for the dropdown */
+        font-size: 15px;
+        font-weight: bold; /* Bold font for dropdown text */
+      }
+
+      #calculate-button {
+        margin-left: 100px;
+        background-color: #59B280; /* Calculate button color */
+        color: white; 
+        border: none; 
+        border-radius: 20px; 
+        padding: 10px 20px; 
+        font-size: 24px; 
+        cursor: pointer; 
+        transition: background-color 0.3s ease; 
+        margin-right: 400px;
+      }
+
+      #calculate-button:hover {
+        background-color: red; /* Hover effect */
+      }
+
+      .results {
+        font-family: "Open Sans", sans-serif;
+        display: flex;
+        justify-content: space-around;
+        margin-top: 40px;
+      }
+
+      .result-item {
+        text-align: center;
+        font-size: 22px;
+      }
+
+      table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+            table-layout: auto;
+            word-wrap: break-word;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+.similarity {
+    color: #5a9380;
+}
+
+.dissimilarity {
+    color: #df2f76;
+}
+
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      tr:hover {
+        background-color: #ddd;
+      }
+
+      .table-container {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      #matrix-header {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+        display: none;
+      }
+
+      .matrix-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .matrix-buttons button {
+        background-color: #f0f4f7;
+        border: 1px solid #ddd;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .matrix-buttons button:hover {
+        background-color: #ddd;
+      }
+     .content-wrapper {
+  display: flex;
+  justify-content: space-between; /* Ensure space between sections */
+  align-items: flex-start; /* Align items at the top */
+  width: 100%; /* Take full width of the page */
+  gap: 20px; /* Space between the two sections */
+}
+
+.results-container {
+  position: absolute;
+  right: 130px;
+  top: 280px;
+  width: 45%; /* Set results container width */
+  padding: 10px;
+  background-color: none;
+  border: 1px solid none;
+}
+
+
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.results-table th, .results-table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.results-table th {
+  background-color: #f2f2f2;
+}
+
+.logo-container {
+  position: absolute;
+  top: 130px;
+  right: 10px; /* Center horizontally */
+  transform: translateX(-50%); /* Shift back by half of the width */
+  display: flex;
+  flex-direction: row; /* Ensure logos align in a row */
+  justify-content: center; /* Center horizontally */
+  gap: 20px; /* Spacing between logos */
+}
+
+
+.logo-container a {
+  margin: 0; /* Remove previous margin */
+}
+
+.logo-container img {
+  width: 150px; /* Set image size */
+  margin-left: 10px;
+  
+}
+.custom-file-button {
+    width: 150px; /* Set the desired width */
+    height: 50px; /* Set the desired height */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.custom-file-button img {
+    max-width: 100%; /* Ensure the image scales correctly within the button */
+    max-height: 100%;
+    object-fit: contain; /* Preserve the aspect ratio of the image */
+}
+
+.custom-file-button:hover {
+    background-color: #e0e0e0; /* Optional: add hover effect */
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <span class="document-text">DOCUMENT</span>
+      <span class="vs-text">VS</span>
+      <span class="ai-generated-text">AI-GENERATED</span>
+      <p class="description">
+          This website will calculate the similarity and dissimilarity between a human-written text document and an AI-generated one.
+      </p>
+  </div>
+    
+<div class="content-wrapper">
+    <div class="upload-section">
+      <h1>UPLOAD PDF FILES HERE:</h1>
+      <form id="uploadForm">
+          <div class="label-input-container">
+              <button type="button" class="custom-file-button" id="human_written_button" onclick="document.getElementById('human_written').click();">
+                  Choose file
+              </button>
+              <input
+                  type="file"
+                  id="human_written"
+                  accept="application/pdf"
+                  required
+                  style="display:none;" 
+                  onchange="updateUploadButtonText('human_written_button', this.files)"
+              />
+              <label for="human_written">HUMAN-WRITTEN DOCUMENT</label>
+          </div>
+          <div id="results-container" class="results-container"></div>
+          <div class="label-input-container">
+              <button type="button" class="custom-file-button" id="chatgpt_generated_button" onclick="document.getElementById('chatgpt_generated').click();">
+                  Choose file
+              </button>
+              <input
+                  type="file"
+                  id="chatgpt_generated"
+                  accept="application/pdf"
+                  required
+                  style="display:none;" 
+                  onchange="updateUploadButtonText('chatgpt_generated_button', this.files)"
+              />
+              <label for="chatgpt_generated">CHATGPT GENERATED TEXT</label>
+          </div>
+      
+          <div class="label-input-container">
+              <button type="button" class="custom-file-button" id="gemini_generated_button" onclick="document.getElementById('gemini_generated').click();">
+                  Choose file
+              </button>
+              <input
+                  type="file"
+                  id="gemini_generated"
+                  accept="application/pdf"
+                  required
+                  style="display:none;"  
+                  onchange="updateUploadButtonText('gemini_generated_button', this.files)"
+              />
+              <label for="gemini_generated">GEMINI GENERATED TEXT</label>
+          </div>
+      
+          <div class="label-input-container">
+              <button type="button" class="custom-file-button" id="claude_generated_button" onclick="document.getElementById('claude_generated').click();">
+                  Choose file
+              </button>
+              <input
+                  type="file"
+                  id="claude_generated"
+                  accept="application/pdf"
+                  required
+                  style="display:none;" 
+                  onchange="updateUploadButtonText('claude_generated_button', this.files)"
+              />
+              <label for="claude_generated">CLAUDE AI GENERATED TEXT</label>
+          </div>
+      
+          <div class="similarity-measure-container">
+              <select id="similarity_measure" required>
+                  <option value="cosine">Cosine Similarity</option>
+                  <option value="jaccard">Jaccard Similarity</option>
+              </select>
+              <button id="calculate-button" type="button" onclick="calculateSimilarity()">CALCULATE</button>
+          </div>
+      </form>
+   
+</div>
+    
+
+   
+<div id="tf-idf" style="margin-top: 250px; margin-left: -100px; margin-right: 300px" >
+    <button id="show-matrix-btn" style="display: none" onclick="toggleMatrix()">
+      Show Matrix
+    </button>
+
+    <div id="matrix-header">TF-IDF Matrix</div>
+
+    <div class="table-container" id="table-container">
+      <button class="scroll-left" onclick="showPreviousTable()">⬅️</button>
+      <div id="table-content"></div>
+      <button class="scroll-right" onclick="showNextTable()">➡️</button>
+    </div>
+  </div>
+    
+    
+
+    <script>
+function updateUploadButtonText(buttonId, files) {
+    const buttonElement = document.getElementById(buttonId);
+    
+    // Mapping button IDs to their corresponding image paths
+    const imageMap = {
+        'human_written_button': "{{ url_for('static', filename='human.jpg') }}",
+        'chatgpt_generated_button': "{{ url_for('static', filename='ChatGPT-Logo.png') }}",
+        'gemini_generated_button': "{{ url_for('static', filename='gemini.png') }}",
+        'claude_generated_button': "{{ url_for('static', filename='claude.png') }}"
+    };
+
+    if (files.length > 0) {
+        // Set the corresponding image based on the buttonId
+        buttonElement.innerHTML = `<img src="${imageMap[buttonId]}" alt="Button ${buttonId} Image" />`;
+    } else {
+        buttonElement.textContent = "Choose file"; // Reset text if no file is selected
+    }
+}
+      let currentPage = 0;
+      const columnsPerPage = 5;
+      let headers = [];
+      let rows = {};
+function calculateSimilarity() {
+    const formData = new FormData();
+    formData.append("human_written", document.getElementById("human_written").files[0]);
+    formData.append("chatgpt_generated", document.getElementById("chatgpt_generated").files[0]);
+    formData.append("gemini_generated", document.getElementById("gemini_generated").files[0]);
+    formData.append("claude_generated", document.getElementById("claude_generated").files[0]);
+    formData.append("similarity_measure", document.getElementById("similarity_measure").value);
+
+    fetch("/calculate_similarity", {
+        method: "POST",
+        body: formData,
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.json();
+    })
+    .then((data) => {
+        if (data && data.similarity_results) {
+            // Render results in the correct container
+            document.getElementById("results-container").innerHTML = renderResults(data.similarity_results);
+            headers = data.tfidf_data.headers;
+            rows = data.tfidf_data.rows;
+            document.getElementById("show-matrix-btn").style.display = "block";
+        } else {
+            console.error("No similarity results found in the response");
+        }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
+function renderSimilarityResults(results) {
+        return `<div class="results">
+          ${results
+            .map((result) => `<div class="result-item">${result}</div>`)
+            .join("")}
+        </div>`;
+      }
+
+function renderResults(results) {
+    let tableHtml = `<table class="results-table"><tr><th>Human Written vs AI Generated</th><th>Similarity</th><th>Dissimilarity</th></tr>`;
+    for (let i = 0; i < results.length; i += 2) {
+        const similarity = results[i].split(": ")[1]; // Extracting similarity
+        const dissimilarity = results[i + 1].split(": ")[1]; // Extracting dissimilarity
+        tableHtml += `<tr><td>${results[i].split(": ")[0]}</td><td>${similarity}</td><td>${dissimilarity}</td></tr>`;
+    }
+    tableHtml += `</table>`;
+    return tableHtml;
+}
+
+function renderTable() {
+  const start = currentPage * columnsPerPage;
+  const end = start + columnsPerPage;
+  const currentHeaders = headers.slice(start, end);
+
+  let tableHtml = `<table><thead><tr><th>Document</th>${currentHeaders
+    .map((header) => `<th>${header}</th>`)
+    .join("")}</tr></thead><tbody>`;
+
+  for (const [docName, values] of Object.entries(rows)) {
+    const rowHtml = currentHeaders
+      .map((header) => `<td>${(values[header] || 0).toFixed(2)}</td>`)
+      .join("");
+    tableHtml += `<tr><th>${docName}</th>${rowHtml}</tr>`;
+  }
+
+  tableHtml += "</tbody></table>";
+
+  document.getElementById("table-content").innerHTML = tableHtml;
+}
+
+
+      function showPreviousTable() {
+        if (currentPage > 0) {
+          currentPage--;
+          renderTable();
+        }
+      }
+
+      function showNextTable() {
+        if ((currentPage + 1) * columnsPerPage < headers.length) {
+          currentPage++;
+          renderTable();
+        }
+      }
+
+      function toggleMatrix() {
+        const tableContainer = document.getElementById("table-container");
+        const matrixHeader = document.getElementById("matrix-header");
+
+        if (tableContainer.style.display === "none") {
+          tableContainer.style.display = "flex";
+          matrixHeader.style.display = "block";
+          renderTable();
+        } else {
+          tableContainer.style.display = "none";
+          matrixHeader.style.display = "none";
+        }
+      }
+    </script>
+
+<div class="logo-container">
+  <a href="https://chat.openai.com/" target="_blank">
+    <img src="{{ url_for('static', filename='ChatGPT-Logo.png') }}" alt="ChatGPT" />
+  </a>
+  <a href="https://gemini.google.com/" target="_blank">
+    <img src="{{ url_for('static', filename='gemini.png') }}" alt="Gemini" />
+  </a>
+  <a href="https://claude.ai/" target="_blank">
+    <img src="{{ url_for('static', filename='claude.png') }}" alt="Claude" />
+  </a>
+</div>
+  </body>
+</html>
