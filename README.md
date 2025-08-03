@@ -1,6 +1,10 @@
 # Document Similarity Calculator
 
+# Document Similarity Calculator
+
 This project is a web application that calculates the similarity and dissimilarity between a human-written text document and various AI-generated documents. It utilizes TF-IDF (Term Frequency-Inverse Document Frequency) and similarity measures such as Cosine Similarity and Jaccard Similarity to provide insights into the textual content.
+
+**Note**: This project is developed as part of our Data Mining subject, where we utilize data mining technologies to analyze and determine the similarity and dissimilarity between human-written documents and AI-generated documents.
 
 ## Features
 
@@ -11,9 +15,11 @@ This project is a web application that calculates the similarity and dissimilari
 
 ## Technologies Used
 
-- Flask: A lightweight WSGI web application framework for Python.
-- scikit-learn: A machine learning library for Python that provides tools for data mining and data analysis.
-- PyPDF2: A library for reading PDF files in Python.
-- Pandas: A data manipulation and analysis library for Python.
-- NumPy: A library for numerical computing in Python.
-- NLTK: The Natural Language Toolkit for working with human language data.
+- **Flask**: A lightweight WSGI web application framework for Python.
+- **scikit-learn**: A machine learning library for Python that provides tools for data mining and data analysis.
+- **PyPDF2**: A library for reading PDF files in Python.
+- **Pandas**: A data manipulation and analysis library for Python.
+- **NumPy**: A library for numerical computing in Python.
+- **NLTK**: The Natural Language Toolkit for working with human language data.
+
+
